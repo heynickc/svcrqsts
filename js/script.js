@@ -116,7 +116,7 @@ $("form").submit(function(event) {
 	}//if something is in #street field, do geocoding else reset the map
 });//geocode address on submit
 
-function getBldgJSON() {
+(function getBldgJSON() {
 	map.on('click', onMapClick);
 	function onMapClick(e) {
 		var latlngStr = 'ST_Point(' + e.latlng.lng + ',' + e.latlng.lat + ')';
@@ -144,8 +144,19 @@ function getBldgJSON() {
 			}//if the user clicks a feature make the popup
 		});//populates popup with cartodb JSON
 	}
-}
-getBldgJSON();
+})();
+
+(function getSvcJSON() {
+	var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=SELECT%20id,%20problemcod,%20the_geom%20FROM%20svcrq';
+	var clusters = new L.MarkerClusterGroup();
+	$.getJSON(svcQryUrl, function(data) {
+		L.geoJson(data.features, {onEachFeature: function (feature, layer)
+			// {console.log(data.features);}
+		});
+		// clusters.addLayer(points);
+		// map.addLayer(clusters);
+	});
+})();
 
 function drawCircle(loc) {
 	//var rad = $(".distance").val()
@@ -196,10 +207,5 @@ $(function() {
 		});
 		$( "#buffAmt" ).val($( "#slider" ).slider( "value" ) + " meters");
 });
-
-function
-
-
-
 
 });
