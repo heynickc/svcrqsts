@@ -150,10 +150,11 @@ $("form").submit(function(event) {
 	var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=SELECT%20id,%20problemcod,%20the_geom%20FROM%20svcrq';
 	var clusters = new L.MarkerClusterGroup();
 	$.getJSON(svcQryUrl, function(data) {
-		L.geoJson(data.features, {onEachFeature: function (feature, layer)
-			// {console.log(data.features);}
-		});
-		// clusters.addLayer(points);
+		points = L.geoJson(data.features);
+		points.addTo(map);
+		// clusters.addTo(map);
+		// console.log(clusters);
+		// clusters.addLayer(points).addTo(map);
 		// map.addLayer(clusters);
 	});
 })();
