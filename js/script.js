@@ -14,10 +14,13 @@ $("document").ready(function() {
 	// Mapbox Light tiles
 	var mapboxUrl = 'http://a.tiles.mapbox.com/v1/mapbox.mapbox-light/{z}/{x}/{y}.png';
 	var mapboxAttrib = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade';
-	var	mapbox = new L.TileLayer(mapboxUrl, {maxZoom: 19, attribution: mapboxAttrib, tms: true});
+	var	mapbox = new L.TileLayer(mapboxUrl, {maxZoom: 17, attribution: mapboxAttrib, tms: true});
 	// Mapbox Streets tiles
 	var mapboxStUrl = 'http://a.tiles.mapbox.com/v1/mapbox.mapbox-streets/{z}/{x}/{y}.png';
 	var	mapboxSt = new L.TileLayer(mapboxStUrl, {maxZoom: 19, attribution: mapboxAttrib, tms: true});
+	// Mapbox Graphite
+	var mapboxGrpUrl = 'http://a.tiles.mapbox.com/v1/mapbox.mapbox-graphite/{z}/{x}/{y}.png';
+	var	mapboxGrp = new L.TileLayer(mapboxGrpUrl, {maxZoom: 19, attribution: mapboxAttrib, tms: true});
 
 	// 2006 aerial photo tiles
 	var metro06URL = 'http://gis.wicomicocounty.org/metro2006/{z}/{x}/{y}.png';
@@ -44,9 +47,10 @@ $("document").ready(function() {
 	var	salisbury = new L.LatLng(38.3660, -75.6035);
 	var map = new L.Map('map', {
 			center: salisbury,
-			layers: [mapbox]
+			layers: [mapboxGrp]
 		});
 	var baseMaps = {
+		"Mapbox Graphite": mapboxGrp,
 		"Mapbox Light": mapbox,
 		"2006 Aerials": metro06,
 		"2008 Aerials": metro08,
@@ -56,6 +60,18 @@ $("document").ready(function() {
 	// Add layer picker
 	var layersControl = new L.Control.Layers(baseMaps);
 	map.addControl(layersControl);
+
+	map.on('zoomend', function(e) {
+		var zoom = map.getZoom();
+		if (zoom > 17) {
+			map.removeLayer(mapboxGrp);
+			map.addLayer(metro10);
+		} if (zoom <= 17) {
+			map.removeLayer(metro10);
+			map.addLayer(mapboxGrp);
+		}
+
+	});
 
 	// Refresh map
 	function refreshMap () {
@@ -81,29 +97,29 @@ $("form").submit(function(event) {
 				var loc = new L.LatLng(y,x);
 				var locMarker = new L.Marker(loc, {draggable: true});
 					markerGroup.addLayer(locMarker);
-					map.addLayer(markerGroup);
+					// map.addLayer(markerGroup);
 					map.setView(loc,16);
-				var rad = 350;
-					drawCircle(loc);
-					getHydrantGeoJSON(loc);
+				// var rad = 350;
+					// drawCircle(loc);
+					// getHydrantGeoJSON(loc);
 				// listeners for .distance range input and dragging the marker
 				locMarker.on('drag', function(e) {
 					mrkLatLng = locMarker.getLatLng();
 					loc = new L.LatLng(mrkLatLng.lat, mrkLatLng.lng);
 					overlayGroup.clearLayers();
-					drawCircle(loc);
-					var rad = $(".distance").val();
-					getHydrantGeoJSON(loc,rad);
+					// drawCircle(loc);
+					// var rad = $(".distance").val();
+					// getHydrantGeoJSON(loc,rad);
 				});
 				$("#slider").bind("slide", function() {
 					overlayGroup.clearLayers();
-					drawCircle(loc);
+					// drawCircle(loc);
 				});
 				$("#slider").bind("slidestop", function() {
 					var rad = $("#slider").slider("value");
 					overlayGroup.clearLayers();
-					getHydrantGeoJSON(loc,rad);
-					drawCircle(loc);
+					// getHydrantGeoJSON(loc,rad);
+					// drawCircle(loc);
 				});
 
 			} else {
@@ -148,14 +164,16 @@ $("form").submit(function(event) {
 
 (function getSvcJSON() {
 	var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=SELECT%20id,%20problemcod,%20the_geom%20FROM%20svcrq';
-	var clusters = new L.MarkerClusterGroup();
+	
 	$.getJSON(svcQryUrl, function(data) {
-		points = L.geoJson(data.features);
-		points.addTo(map);
-		// clusters.addTo(map);
-		// console.log(clusters);
-		// clusters.addLayer(points).addTo(map);
-		// map.addLayer(clusters);
+		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
+		var points = L.geoJson(data.features, {
+			pointToLayer: function(feature, latlng) {
+				var marker = L.marker(latlng);
+				clusters.addLayer(marker);
+				return clusters;
+			}
+		}).addTo(map);
 	});
 })();
 
