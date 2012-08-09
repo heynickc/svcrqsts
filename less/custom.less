@@ -10,6 +10,7 @@ rgb(135,121,99) Light Brown
 
 body, html {
   height: 100%;
+  width: 100%;
 }
 html {
   overflow: hidden;
@@ -19,20 +20,33 @@ body {
 	height: 100%;
   // margin: 0 auto;
   position: relative;
+  top: 0;
+  bottom: 0;
 }
 .header {
 	// height: 40px; /*8.33333333%*/
-	background: @satinblue;
+	background: @transparentblack;
   position: relative;
   top: 0;
   width: 100%;
 }
-.header h2 {
-	color: rgb(242,241,233);
+.header h2, h3 {
+	color: @white;
 	padding: 6px;
-	margin: 0;
+	margin: 0 auto;
   font-weight: bold;
   &:hover {background: @satinblue;}
+}
+body aside {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 55px;
+  width: 320px;
+  height: 100%;
+  background: @transparentblack;
+  z-index:100;
+  .box-shadow(0px 0px 5px @lightergrey);
 }
 
 /* Map Div */
@@ -55,9 +69,9 @@ body {
 .controls {
   width: 100%;
   // height: 90px;
-  position: relative;
+  position: absolute;
   bottom: 0;
-  background: @satinblue;
+  background: @transparentblack;
 }
 
 /* Geocoding Toolbox */
@@ -66,7 +80,7 @@ body {
   width: 320px;
   height: 90px; /*18.75%*/
   margin-bottom: 0;
-  background: @satinblue;
+  background: @transparentblack;
   float: left;
   /*display: none; /*for testing*/
 }
@@ -116,8 +130,9 @@ footer {
   width: 320px;
   height: 90px; /*18.75%*/
   margin-bottom: 0;
-  background: @satinblue;
+  background: @transparentblack;
   float: left;
+  display: none;
 }
 .buffBar label {
   color: white;
@@ -132,7 +147,7 @@ footer {
   margin: 10px 50px 10px 10px;
   float: right;
   font-size: 1.2em;
-  background: @satinblue;
+  background: @transparentblack;
   border: none;
   color: rgb(242,241,233);
   padding: 0;
@@ -149,4 +164,7 @@ footer {
   width: 298px;
   position: relative;
   bottom: 0;
+}
+div.leaflet-control-zoom.leaflet-control {
+  .box-shadow(0px 0px 5px @lightergrey)
 }

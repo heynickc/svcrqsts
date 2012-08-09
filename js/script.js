@@ -1,11 +1,11 @@
 $("document").ready(function() {
 
 	// Resize Map Center Div
-	$(".wrapper").height($(".wrapper").outerHeight() - (($(".controls").outerHeight()) + $("header").outerHeight()) + "px");
-	$(window).resize(function() {
-		$(".wrapper").height("100%");
-		$(".wrapper").height($(".wrapper").outerHeight() - (($(".controls").outerHeight()) + $(".header").outerHeight()) + "px");
-	});
+	// $(".wrapper").height($(".wrapper").outerHeight() - (($(".controls").outerHeight()) + $("header").outerHeight()) + "px");
+	// $(window).resize(function() {
+	//	$(".wrapper").height("100%");
+	//	$(".wrapper").height($(".wrapper").outerHeight() - (($(".controls").outerHeight()) + $(".header").outerHeight()) + "px");
+	// });
 
 	// Cloudmade tiles
 	var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/903a54a369114f6580f12400d931ece6/997/256/{z}/{x}/{y}.png';
@@ -44,7 +44,7 @@ $("document").ready(function() {
 	var overlayGroup = new L.LayerGroup();
 
 	// Create map
-	var	salisbury = new L.LatLng(38.3660, -75.6035);
+	var	salisbury = new L.LatLng(38.3672, -75.5748);
 	var map = new L.Map('map', {
 			center: salisbury,
 			layers: [mapboxGrp]
@@ -99,29 +99,19 @@ $("form").submit(function(event) {
 					markerGroup.addLayer(locMarker);
 					// map.addLayer(markerGroup);
 					map.setView(loc,16);
-				// var rad = 350;
-					// drawCircle(loc);
-					// getHydrantGeoJSON(loc);
 				// listeners for .distance range input and dragging the marker
 				locMarker.on('drag', function(e) {
 					mrkLatLng = locMarker.getLatLng();
 					loc = new L.LatLng(mrkLatLng.lat, mrkLatLng.lng);
 					overlayGroup.clearLayers();
-					// drawCircle(loc);
-					// var rad = $(".distance").val();
-					// getHydrantGeoJSON(loc,rad);
 				});
 				$("#slider").bind("slide", function() {
 					overlayGroup.clearLayers();
-					// drawCircle(loc);
 				});
 				$("#slider").bind("slidestop", function() {
 					var rad = $("#slider").slider("value");
 					overlayGroup.clearLayers();
-					// getHydrantGeoJSON(loc,rad);
-					// drawCircle(loc);
 				});
-
 			} else {
 				refreshMap();
 				$('#street').val('Address Invalid');
@@ -176,44 +166,6 @@ $("form").submit(function(event) {
 		}).addTo(map);
 	});
 })();
-
-function drawCircle(loc) {
-	//var rad = $(".distance").val()
-	var rad = $("#slider").slider("value");
-	var circleOptions = {
-		color: '#509123',
-		fillColor: '#c3eaa7',
-		fillOpacity: 0.25
-	};
-	var buff = new L.Circle(loc, rad, circleOptions);
-	overlayGroup.addLayer(buff);
-	map.addLayer(overlayGroup);
-}
-
-function getHydrantGeoJSON(loc) {
-	//var hydLayer = new L.GeoJSON();
-	//var rad = $(".distance").val();
-	var rad = $("#slider").slider("value");
-	var hydLayer = new L.GeoJSON(null, {
-		pointToLayer: function (feature, latlng) {
-			return new L.CircleMarker(latlng, {
-				radius: 3,
-				fillColor: "#cd2105",
-				color: "#000",
-				weight: 1,
-				opacity: 1,
-				fillOpacity: 0.75
-				});
-			}
-		});
-	$.getJSON('http://nickchamberlain.cartodb.com/api/v1/sql/?q=SELECT * FROM hydrants WHERE ST_Contains(ST_Buffer(ST_Transform(ST_SetSRID(ST_Point(' + loc.lng + ',' + loc.lat + '),4326),26985),' + rad + '),ST_Transform(ST_SetSRID(hydrants.the_geom,4326),26985))&format=geojson&callback=?',
-		function(geojson) {
-			$.each(geojson.features, function(i, feature) {
-				hydLayer.addData(feature);
-			});
-		});
-	overlayGroup.addLayer(hydLayer);
-}
 
 $(function() {
 		$("#slider").slider({
