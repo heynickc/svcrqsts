@@ -1,5 +1,7 @@
 $("document").ready(function() {
 
+	$("street").select2();
+
 	// Resize Map Center Div
 	// $(".wrapper").height($(".wrapper").outerHeight() - (($(".controls").outerHeight()) + $("header").outerHeight()) + "px");
 	// $(window).resize(function() {
@@ -9,11 +11,11 @@ $("document").ready(function() {
 
 	// Cloudmade tiles
 	var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/903a54a369114f6580f12400d931ece6/997/256/{z}/{x}/{y}.png';
-	var cloudmadeAttrib = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade';
+	var cloudmadeAttrib = 'Map data &copy; 2012 OpenStreetMap contributors, Imagery &copy; 2012 CloudMade';
 	var cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 19, attribution: cloudmadeAttrib});
 	// Mapbox Light tiles
 	var mapboxUrl = 'http://a.tiles.mapbox.com/v1/mapbox.mapbox-light/{z}/{x}/{y}.png';
-	var mapboxAttrib = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade';
+	var mapboxAttrib = 'Map data &copy; 2012 OpenStreetMap contributors, Imagery &copy; 2012 CloudMade';
 	var	mapbox = new L.TileLayer(mapboxUrl, {maxZoom: 17, attribution: mapboxAttrib, tms: true});
 	// Mapbox Streets tiles
 	var mapboxStUrl = 'http://a.tiles.mapbox.com/v1/mapbox.mapbox-streets/{z}/{x}/{y}.png';
@@ -47,8 +49,10 @@ $("document").ready(function() {
 	var	salisbury = new L.LatLng(38.3672, -75.5748);
 	var map = new L.Map('map', {
 			center: salisbury,
-			layers: [mapboxGrp]
+			layers: [mapboxGrp],
+			attributionControl: false
 		});
+
 	var baseMaps = {
 		"Mapbox Graphite": mapboxGrp,
 		"Mapbox Light": mapbox,
@@ -60,6 +64,9 @@ $("document").ready(function() {
 	// Add layer picker
 	var layersControl = new L.Control.Layers(baseMaps);
 	map.addControl(layersControl);
+
+	// move attribution to left side
+	var attribOverride = new L.Control.Attribution({position: 'bottomleft'}).addTo(map);
 
 	map.on('zoomend', function(e) {
 		var zoom = map.getZoom();
