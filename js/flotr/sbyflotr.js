@@ -35,6 +35,7 @@ var lineGraph = function basic_bars(container, data) {
         relative : true
       },
       yaxis : {
+        color: '#FFF',
         min : 0,
         autoscaleMargin : 1
       },
@@ -42,6 +43,7 @@ var lineGraph = function basic_bars(container, data) {
         mode : 'x'
       },
       xaxis : {
+        color: '#FFF',
         labelsAngle : 45,
         showMinorLabels: true,
         mode : 'time'
