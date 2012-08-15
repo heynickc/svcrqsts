@@ -6,7 +6,7 @@ $("document").ready(function() {
 
   var qry = encodeURIComponent('SELECT  month, count(id) FROM ((SELECT id, date_trunc(\'month\', CAST(datetimecl AS timestamp)) as month FROM svcrq)) as A GROUP BY month ORDER BY month');
 
-	var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + qry;
+	var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + qry + '&callback=?';
 
 	$.getJSON(svcQryUrl, function(data) {
 		var items = [];

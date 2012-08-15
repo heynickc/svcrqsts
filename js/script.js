@@ -160,7 +160,7 @@ $("form").submit(function(event) {
 })();
 
 (function getSvcJSON() {
-	var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=SELECT%20id,%20problemcod,%20the_geom%20FROM%20svcrq';
+	var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=SELECT%20id,%20problemcod,%20the_geom%20FROM%20svcrq&callback=?';
 	
 	$.getJSON(svcQryUrl, function(data) {
 		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
