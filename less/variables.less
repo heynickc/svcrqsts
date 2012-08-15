@@ -49,7 +49,15 @@
 
 // greyscale
 
-@transparentblack: rgba(0,0,0,25%);
+// opaque shadow with fallback
+
+@graphite		: #232323;
+@transgraph		: rgba(35,35,35,.75);
+.opaqueshadow {
+	background-color: @graphite;
+	background-color: @transgraph;
+}
+
 @black 			: rgb(0,0,0);
 @darkgrey 		: lighten(@black, 25%);
 @grey 			: lighten(@black, 50%);

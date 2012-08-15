@@ -25,7 +25,7 @@ body {
 }
 .header {
 	// height: 40px; /*8.33333333%*/
-	background: @transparentblack;
+  .opaqueshadow;
   position: relative;
   top: 0;
   width: 100%;
@@ -35,7 +35,9 @@ body {
 	padding: 6px;
 	margin: 0 auto;
   font-weight: bold;
-  &:hover {background: @transparentblack;}
+  &:hover {
+    .opaqueshadow;
+  }
 }
 body aside {
   position: fixed;
@@ -44,7 +46,10 @@ body aside {
   right: 55px;
   width: 320px;
   height: 100%;
-  background: @transparentblack;
+  border: solid @white 1px;
+  border-top: none;
+  border-bottom: none;
+  .opaqueshadow;
   z-index:100;
   .box-shadow(0px 0px 5px @lightergrey);
 }
@@ -71,7 +76,7 @@ body aside {
   // height: 90px;
   position: absolute;
   bottom: 0;
-  background: @transparentblack;
+  .opaqueshadow;
 }
 
 /* Geocoding Toolbox */
@@ -80,7 +85,7 @@ body aside {
   width: 320px;
   height: 90px; /*18.75%*/
   margin-bottom: 0;
-  background: @transparentblack;
+  .opaqueshadow;
   float: left;
   /*display: none; /*for testing*/
 }
@@ -88,22 +93,22 @@ body aside {
   width: 250px;
   float: left;
 }
-footer {
-	display: none;
+.gcodeBox input {
+  padding: 4px;
+  line-height: 20px;
+  .rounded(4px);
 }
 #street {
 	width: 230px; /*92%*/
 	float: left;
   margin: 10px;
   height: 30px;
-  padding: 0 5px;
 }
 #city {
 	width: 110px; /*44%*/
 	float: left;
   margin: 0 10px 10px 10px;
   height: 30px;
-  padding: 0 5px;
 }
 #state {
 	width: 40px; /*16%*/
@@ -125,50 +130,16 @@ footer {
   text-align: center;
 }
 
-/*buffer slider*/
-.sliderBox {
-  width: 320px;
-  height: 90px; /*18.75%*/
-  margin-bottom: 0;
-  background: @transparentblack;
-  float: left;
-  display: none;
-}
-.buffBar label {
-  color: white;
-  float: left;
-  margin: 10px 10px 10px 10px;
-  line-height: 26px;
-  font-size: 1.2em;
-  width: 120px;
-}
-#buffAmt {
-  width: 120px;
-  margin: 10px 50px 10px 10px;
-  float: right;
-  font-size: 1.2em;
-  background: @transparentblack;
-  border: none;
-  color: rgb(242,241,233);
-  padding: 0;
-  font-weight: bold;
-  height: 26px;
-}
-.buffBar {
-  height: 100%;
-  width: 320px;
-}
-#slider {
-  clear: both;
-  margin: 10px 10px 20px 10px;
-  width: 298px;
-  position: relative;
-  bottom: 0;
-}
+// customize leaflet
+
 div.leaflet-control-zoom.leaflet-control {
   .box-shadow(0px 0px 5px @lightergrey)
 }
 
 // Flotr Graphs
 
-
+#flotr2 {
+  height: 160px; 
+  width: 300px; 
+  margin: 50px 0 0 0;
+}
