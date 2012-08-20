@@ -34,6 +34,7 @@ $("document").ready(function() {
 	// move attribution to left side
 	var attribOverride = new L.Control.Attribution({position: 'bottomleft'}).addTo(map);
 
+	// if map zoom is greater than 17, load 2010 aerials
 	map.on('zoomend', function(e) {
 		var zoom = map.getZoom();
 		if (zoom > 17) {
@@ -88,11 +89,24 @@ $("form").submit(function(event) {
 	}//if something is in #street field, do geocoding else reset the map
 });//geocode address on submit
 
+(function getCityQuads() {
+	var quadGeoQry = encodeURIComponent('SELECT quad_name, the_geom FROM cityquads');
+
+	var quadGeoUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=' + quadGeoQry + '&callback=?';
+
+	$.getJSON(quadGeoUrl, function(data) {
+		var poly = L.geoJson(data.features).addTo(map);
+		});
+})();
+
+
 
 (function getSvcJSON() {
-	var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=SELECT%20id,%20problemcod,%20the_geom%20FROM%20svcrq&callback=?';
+	var svcGeoQry = encodeURIComponent('SELECT id, problemcod, the_geom FROM svcrq');
+
+	var svcGeoUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=' +svcGeoQry + '&callback=?';
 	
-	$.getJSON(svcQryUrl, function(data) {
+	$.getJSON(svcGeoUrl, function(data) {
 		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
 		var points = L.geoJson(data.features, {
 			pointToLayer: function(feature, latlng) {
@@ -103,17 +117,5 @@ $("form").submit(function(event) {
 		}).addTo(map);
 	});
 })();
-
-$(function() {
-		$("#slider").slider({
-		min: 0,
-		max: 2000,
-		value: 500,
-		slide: function( event, ui ) {
-				$( "#buffAmt" ).val(ui.value + " meters");
-			}
-		});
-		$( "#buffAmt" ).val($( "#slider" ).slider( "value" ) + " meters");
-});
 
 });
