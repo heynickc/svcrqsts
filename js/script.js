@@ -1,9 +1,5 @@
 $("document").ready(function() {
 
-	// Cloudmade tiles
-	var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/903a54a369114f6580f12400d931ece6/997/256/{z}/{x}/{y}.png';
-	var cloudmadeAttrib = 'Map data &copy; 2012 OpenStreetMap contributors, Imagery &copy; 2012 CloudMade';
-	var cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 19, attribution: cloudmadeAttrib});
 	// Mapbox Light tiles
 	var mapboxUrl = 'http://a.tiles.mapbox.com/v1/mapbox.mapbox-light/{z}/{x}/{y}.png';
 	var mapboxAttrib = 'Map data &copy; 2012 OpenStreetMap contributors, Imagery &copy; 2012 CloudMade';
@@ -15,20 +11,11 @@ $("document").ready(function() {
 	var mapboxGrpUrl = 'http://a.tiles.mapbox.com/v1/mapbox.mapbox-graphite/{z}/{x}/{y}.png';
 	var	mapboxGrp = new L.TileLayer(mapboxGrpUrl, {maxZoom: 19, attribution: mapboxAttrib, tms: true});
 
-	// 2006 aerial photo tiles
-	var metro06URL = 'http://gis.wicomicocounty.org/metro2006/{z}/{x}/{y}.png';
-	var metro06 = new L.TileLayer(metro06URL, {maxZoom: 19, attribution: mapboxAttrib, tms: true, opacity: 1});
-	// 2008 aerial photo tiles
-	var metro08URL = 'http://gis.wicomicocounty.org/metro2008/{z}/{x}/{y}.png';
-	var metro08 = new L.TileLayer(metro08URL, {maxZoom: 19, attribution: mapboxAttrib, tms: true, opacity: 1});
 	// 2010 aerial photo tiles
 	var metro10URL = 'http://gis.wicomicocounty.org/metro2010/{z}/{x}/{y}.png';
 	var metro10 = new L.TileLayer(metro10URL, {maxZoom: 19, attribution: mapboxAttrib, tms: true, opacity: 1});
 
-	// CartoDB building footprint tiles
-	var	bldgTileURL = 'http://nickchamberlain.cartodb.com/tiles/buildings/{z}/{x}/{y}.png';
-	var bldgTiles = new L.TileLayer(bldgTileURL);
-	// CartoDB building footprint tiles
+	// CartoDB City Quadrants
 	var	quadTileURL = 'http://nickchamberlain.cartodb.com/tiles/cityquads/{z}/{x}/{y}.png';
 	var quadTiles = new L.TileLayer(quadTileURL);
 
@@ -40,21 +27,9 @@ $("document").ready(function() {
 	var	salisbury = new L.LatLng(38.3672, -75.5748);
 	var map = new L.Map('map', {
 			center: salisbury,
-			layers: [mapboxGrp],
+			layers: [mapboxGrp, quadTiles],
 			attributionControl: false
 		});
-
-	var baseMaps = {
-		"Mapbox Graphite": mapboxGrp,
-		"Mapbox Light": mapbox,
-		"2006 Aerials": metro06,
-		"2008 Aerials": metro08,
-		"2010 Aerials": metro10
-	};
-
-	// Add layer picker
-	var layersControl = new L.Control.Layers(baseMaps);
-	map.addControl(layersControl);
 
 	// move attribution to left side
 	var attribOverride = new L.Control.Attribution({position: 'bottomleft'}).addTo(map);
@@ -113,35 +88,6 @@ $("form").submit(function(event) {
 	}//if something is in #street field, do geocoding else reset the map
 });//geocode address on submit
 
-(function getBldgJSON() {
-	map.on('click', onMapClick);
-	function onMapClick(e) {
-		var latlngStr = 'ST_Point(' + e.latlng.lng + ',' + e.latlng.lat + ')';
-		var bldgQryURL = 'http://nickchamberlain.cartodb.com/api/v1/sql/?q=SELECT bldg_type FROM buildings WHERE ST_Contains(buildings.the_geom,ST_SetSRID(' + latlngStr + ',4326))&format=json&callback=?';
-		$.getJSON(bldgQryURL, function(data) {
-			var items = [];
-			if ($.type(data.rows[0]) !== "undefined") {
-				//console.log(data.rows[0]);
-				$.each(data.rows[0], function(key, val) {
-						items.push('<li id="' + key + '"><strong>' + key + '</strong>: ' + val + '</li>');
-				});
-				var popupHTML = $('<ul/>', {
-					'id': 'my-new-list',
-					html: items.join('')
-				});//.appendTo(popupHTML);
-				//console.log(popupHTML)
-				//console.log(e.latlng);
-				$.each(popupHTML, function(index) {
-					console.log(popupHTML.text());
-				});
-				var popup = new L.Popup();
-					popup.setLatLng(e.latlng);
-					popup.setContent(popupHTML.html());
-				map.openPopup(popup);
-			}//if the user clicks a feature make the popup
-		});//populates popup with cartodb JSON
-	}
-})();
 
 (function getSvcJSON() {
 	var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=SELECT%20id,%20problemcod,%20the_geom%20FROM%20svcrq&callback=?';

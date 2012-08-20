@@ -1,7 +1,7 @@
-My CartoDB Web Map Page
+Service Request Visualizer
 =======================
 
 A Work In Progress
 ------------------
 
-This is just a prototype using responsive CSS to display a basemap and data stored in CartoDB with a Geocoding service.
+This is an app using Flotr2, Leaflet, and CartoDB to provide a visualization of Service Requests to the City of Salisbury Public Works as recorded using the Cityworks CMMS.
