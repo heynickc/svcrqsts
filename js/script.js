@@ -27,7 +27,7 @@ $("document").ready(function() {
 	var	salisbury = new L.LatLng(38.3672, -75.5748);
 	var map = new L.Map('map', {
 			center: salisbury,
-			layers: [mapboxGrp, quadTiles],
+			layers: [mapboxGrp],
 			attributionControl: false
 		});
 
@@ -89,18 +89,49 @@ $("form").submit(function(event) {
 	}//if something is in #street field, do geocoding else reset the map
 });//geocode address on submit
 
+// Get City Quadrant polygons from Cart0DB
 (function getCityQuads() {
+	var poly;
 	var quadGeoQry = encodeURIComponent('SELECT quad_name, the_geom FROM cityquads');
-
 	var quadGeoUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=' + quadGeoQry + '&callback=?';
 
-	$.getJSON(quadGeoUrl, function(data) {
-		var poly = L.geoJson(data.features).addTo(map);
+	function highlightFeature(e) {
+		var layer = e.target;
+
+		layer.setStyle({
+			fillOpacity: 1
 		});
+
+		if (!L.Browser.ie && !L.Browser.opera) {
+			layer.bringToFront();
+		}
+	}
+	function resetHighlight(e) {
+		poly.resetStyle(e.target);
+	}
+	function zoomToFeature(e) {
+		map.fitBounds(e.target.getBounds());
+	}
+
+	$.getJSON(quadGeoUrl, function(data) {
+		var style = {
+			weight: 1,
+			color: '#fff',
+			fillColor: '#ee791c',
+			fillOpacity: 0.1
+		};
+		function onEachFeature(feature, layer) {
+			layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click: zoomToFeature
+			});
+		}
+		poly = L.geoJson(data.features, {style: style, onEachFeature: onEachFeature}).addTo(map);
+	});
 })();
 
-
-
+// Get Service Requests from CartoDB
 (function getSvcJSON() {
 	var svcGeoQry = encodeURIComponent('SELECT id, problemcod, the_geom FROM svcrq');
 
@@ -115,7 +146,20 @@ $("form").submit(function(event) {
 				return clusters;
 			}
 		}).addTo(map);
+		map.fitBounds(clusters.getBounds());
 	});
 })();
 
 });
+
+// SQL FOR QUADRANT ENHANCEMENTS
+// SELECT geom, 
+// CASE 
+// WHEN quad_name='QUAD 1 N DIVISION ST' THEN 1
+// WHEN quad_name='QUAD 2 CHURCH ST' THEN 2
+// WHEN quad_name='QUAD 3 PRINCETON HOMES' THEN 3
+// WHEN quad_name='QUAD 4 RIVERSIDE DR' THEN 4
+// ELSE 0
+// END as quad
+// FROM cityquads
+// ORDER BY quad
