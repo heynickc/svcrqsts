@@ -1,14 +1,5 @@
 $("document").ready(function() {
 
-	$("street").select2();
-
-	// Resize Map Center Div
-	// $(".wrapper").height($(".wrapper").outerHeight() - (($(".controls").outerHeight()) + $("header").outerHeight()) + "px");
-	// $(window).resize(function() {
-	//	$(".wrapper").height("100%");
-	//	$(".wrapper").height($(".wrapper").outerHeight() - (($(".controls").outerHeight()) + $(".header").outerHeight()) + "px");
-	// });
-
 	// Cloudmade tiles
 	var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/903a54a369114f6580f12400d931ece6/997/256/{z}/{x}/{y}.png';
 	var cloudmadeAttrib = 'Map data &copy; 2012 OpenStreetMap contributors, Imagery &copy; 2012 CloudMade';
@@ -110,13 +101,6 @@ $("form").submit(function(event) {
 				locMarker.on('drag', function(e) {
 					mrkLatLng = locMarker.getLatLng();
 					loc = new L.LatLng(mrkLatLng.lat, mrkLatLng.lng);
-					overlayGroup.clearLayers();
-				});
-				$("#slider").bind("slide", function() {
-					overlayGroup.clearLayers();
-				});
-				$("#slider").bind("slidestop", function() {
-					var rad = $("#slider").slider("value");
 					overlayGroup.clearLayers();
 				});
 			} else {
