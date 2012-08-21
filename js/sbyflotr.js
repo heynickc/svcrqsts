@@ -1,14 +1,18 @@
 $("document").ready(function() {
 
+// SR Frequency by Month
 (function getSvcGraph() {
 
-  var qry = encodeURIComponent('SELECT  month, count(id) FROM ((SELECT id, EXTRACT(EPOCH FROM (date_trunc(\'month\', datetimecl)))*1000 as month FROM svcrq)) as A GROUP BY month ORDER BY month');
+  var svcQry = encodeURIComponent('SELECT  month, count(id) FROM ((SELECT id, EXTRACT(EPOCH FROM (date_trunc(\'month\', datetimecl)))*1000 as month FROM svcrq)) as A GROUP BY month ORDER BY month');
 
   // var qry = encodeURIComponent('SELECT  month, year, count(id) FROM ((SELECT id, date_part(\'year\', datetimecl) as year, date_part(\'month\', datetimecl) as month FROM svcrq)) as A WHERE month > 6 or year > 2010 GROUP BY year, month ORDER BY year, month;');
 
   // var qry = encodeURIComponent('SELECT  month, count(id) FROM ((SELECT id, date_trunc(\'month\', CAST(datetimecl AS timestamp)) as month FROM svcrq)) as A GROUP BY month ORDER BY month');
 
-  var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + qry + '&callback=?';
+  // SQL for selecting highest frequency of problem codes:
+  // var qry = SELECT problemcod, count(problemcod) as cnt FROM svcrq GROUP BY problemcod ORDER BY cnt DESC LIMIT 5
+
+  var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + svcQry + '&callback=?';
 
   $.getJSON(svcQryUrl, function(data) {
     var items = [];
@@ -17,12 +21,32 @@ $("document").ready(function() {
       items.push([val.month, val.count]);
     });
 
-    lineGraph(document.getElementById("flotr2"), items);
+    lineGraph(document.getElementById("svcGraph"), items);
   });
+
+})();
+
+// Top 5 Problem Categories
+(function getProbGraph() {
+
+  var probQry = encodeURIComponent('SELECT problemcod, count(problemcod) as cnt FROM svcrq GROUP BY problemcod ORDER BY cnt DESC LIMIT 5');
+
+  var probQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + probQry + '&callback=?';
+
+  $.getJSON(probQryUrl, function(data) {
+    var items = [];
+
+    $.each(data.rows, function(key, val) {
+      items.push([val.problemcod, val.cnt]);
+    });
+
+    probGraph(document.getElementById("probGraph"), items);
+  });
+
 })();
 
 
-var lineGraph = function basic_bars(container, data) {
+var lineGraph = function timeLine(container, data) {
   var
     d1 = data,
     options,
@@ -75,4 +99,33 @@ var lineGraph = function basic_bars(container, data) {
 
   Flotr.EventAdapter.observe(container, 'flotr:click', function () { graph = drawGraph(); });
 };
+
+var probGraph = function probGraph(container, data) {
+
+  var horizontal = false,
+      d1 = data;
+
+  // Draw the graph
+  Flotr.draw(
+    container,
+    data,
+    {
+      bars : {
+        show : true,
+        horizontal : false,
+        shadowSize : 0,
+        barWidth : 0.5
+      },
+      mouse : {
+        track : true,
+        relative : true
+      },
+      yaxis : {
+        min : 0,
+        autoscaleMargin : 1
+      }
+    }
+  );
+};
+
 });

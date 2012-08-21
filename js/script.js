@@ -99,7 +99,9 @@ $("form").submit(function(event) {
 		var layer = e.target;
 
 		layer.setStyle({
-			fillOpacity: 1
+			opacity: 1,
+			fillOpacity: 0,
+			weight: 2
 		});
 
 		if (!L.Browser.ie && !L.Browser.opera) {
@@ -118,7 +120,8 @@ $("form").submit(function(event) {
 			weight: 1,
 			color: '#fff',
 			fillColor: '#ee791c',
-			fillOpacity: 0.1
+			opacity: 1,
+			fillOpacity: 0.2
 		};
 		function onEachFeature(feature, layer) {
 			layer.on({
@@ -152,14 +155,9 @@ $("form").submit(function(event) {
 
 });
 
-// SQL FOR QUADRANT ENHANCEMENTS
-// SELECT geom, 
-// CASE 
-// WHEN quad_name='QUAD 1 N DIVISION ST' THEN 1
-// WHEN quad_name='QUAD 2 CHURCH ST' THEN 2
-// WHEN quad_name='QUAD 3 PRINCETON HOMES' THEN 3
-// WHEN quad_name='QUAD 4 RIVERSIDE DR' THEN 4
-// ELSE 0
-// END as quad
-// FROM cityquads
-// ORDER BY quad
+// Query to total by Quadrant - REMEMBER WHY YOU HAD TO USE ST_SetSRID!!!!
+
+// SELECT cityquads.quad as q, count(svcrq.id) 
+// FROM svcrq, cityquads 
+// WHERE ST_Intersects(ST_SetSRID(cityquads.geom, 4326), ST_SetSRID(svcrq.geom, 4326)) 
+// GROUP BY q ORDER BY q
