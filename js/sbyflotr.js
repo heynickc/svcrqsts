@@ -34,13 +34,15 @@ $("document").ready(function() {
   var probQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + probQry + '&callback=?';
 
   $.getJSON(probQryUrl, function(data) {
-    var items = [];
+    var items = [],
+        ticks = [];
 
     $.each(data.rows, function(key, val) {
-      items.push([val.problemcod, val.cnt]);
+      items.push([key, val.cnt]);
+      ticks.push([key, val.problemcod]);
     });
 
-    probGraph(document.getElementById("probGraph"), items);
+    probGraph(document.getElementById("probGraph"), items, ticks);
   });
 
 })();
@@ -77,7 +79,9 @@ var lineGraph = function timeLine(container, data) {
         mode : 'time'
       },
       grid : {
-        color: '#fff'
+        color: '#fff',
+        verticalLines: false,
+        horizontalLines: false
       }
     };
 
@@ -100,21 +104,23 @@ var lineGraph = function timeLine(container, data) {
   Flotr.EventAdapter.observe(container, 'flotr:click', function () { graph = drawGraph(); });
 };
 
-var probGraph = function probGraph(container, data) {
+var probGraph = function probGraph(container, data, ticks) {
 
-  var horizontal = false,
-      d1 = data;
+  var d1 = data,
+      labels = ticks;
 
   // Draw the graph
   Flotr.draw(
     container,
-    data,
+    [d1],
     {
+      HtmlText: false,
+      title: 'Top 5 Service Request Types',
       bars : {
         show : true,
         horizontal : false,
         shadowSize : 0,
-        barWidth : 0.5
+        barWidth : 0.75
       },
       mouse : {
         track : true,
@@ -122,7 +128,20 @@ var probGraph = function probGraph(container, data) {
       },
       yaxis : {
         min : 0,
-        autoscaleMargin : 1
+        autoscaleMargin : 1,
+        color: '#fff',
+        title: '# of Requests'
+      },
+      xaxis: {
+        color: '#fff',
+        // title: 'Request Type',
+        ticks: labels,
+        labelsAngle: 45
+      },
+      grid: {
+        verticalLines: false,
+        horizontalLines: false,
+        color: '#fff'
       }
     }
   );

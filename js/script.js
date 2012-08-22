@@ -71,7 +71,7 @@ $("form").submit(function(event) {
 				var loc = new L.LatLng(y,x);
 				var locMarker = new L.Marker(loc, {draggable: true});
 					markerGroup.addLayer(locMarker);
-					// map.addLayer(markerGroup);
+					//map.addLayer(markerGroup);
 					map.setView(loc,16);
 				// listeners for .distance range input and dragging the marker
 				locMarker.on('drag', function(e) {
