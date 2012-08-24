@@ -157,7 +157,8 @@ $("form").submit(function(event) {
 
 // Query to total by Quadrant - REMEMBER WHY YOU HAD TO USE ST_SetSRID!!!!
 
-// SELECT cityquads.quad as q, count(svcrq.id) 
-// FROM svcrq, cityquads 
-// WHERE ST_Intersects(ST_SetSRID(cityquads.geom, 4326), ST_SetSRID(svcrq.geom, 4326)) 
+// SELECT cityquads.quad as q, count(svcrq.id)
+// FROM svcrq, cityquads
+// WHERE ST_Intersects(ST_SetSRID(cityquads.geom, 4326),
+// ST_SetSRID(svcrq.geom, 4326))
 // GROUP BY q ORDER BY q
