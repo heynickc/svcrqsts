@@ -146,6 +146,12 @@ $("form").submit(function(event) {
 			pointToLayer: function(feature, latlng) {
 				var marker = L.marker(latlng);
 				clusters.addLayer(marker);
+				clusters.on('clustermouseover', function (e) {
+					return null;
+				});
+				clusters.on('mouseover', function (e) {
+					return null;
+				});
 				return clusters;
 			}
 		}).addTo(map);

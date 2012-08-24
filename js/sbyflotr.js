@@ -116,6 +116,7 @@ var probGraph = function probGraph(container, data, ticks) {
     {
       HtmlText: false,
       title: 'Top 5 Service Request Types',
+      ieBackgroundColor: '#232323',
       bars : {
         show : true,
         horizontal : false,
