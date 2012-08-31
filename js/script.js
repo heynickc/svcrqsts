@@ -11,6 +11,11 @@ $("document").ready(function() {
 	var mapboxGrpUrl = 'http://a.tiles.mapbox.com/v1/mapbox.mapbox-graphite/{z}/{x}/{y}.png';
 	var	mapboxGrp = new L.TileLayer(mapboxGrpUrl, {maxZoom: 19, attribution: mapboxAttrib, tms: true});
 
+	// Contour Tiles on Mapbox Graphite
+	var mapboxContourUrl = 'http://api.tiles.mapbox.com/v1/nickspw.map-l4rdihsl/{z}/{x}/{y}.png';
+	var	mapboxContour = new L.TileLayer(mapboxContourUrl, {maxZoom: 19, attribution: mapboxAttrib, tms: true});
+
+
 	// 2010 aerial photo tiles
 	var metro10URL = 'http://gis.wicomicocounty.org/metro2010/{z}/{x}/{y}.png';
 	var metro10 = new L.TileLayer(metro10URL, {maxZoom: 19, attribution: mapboxAttrib, tms: true, opacity: 1});
@@ -27,7 +32,7 @@ $("document").ready(function() {
 	var	salisbury = new L.LatLng(38.3672, -75.5748);
 	var map = new L.Map('map', {
 			center: salisbury,
-			layers: [mapboxGrp],
+			layers: [mapboxContour],
 			attributionControl: false
 		});
 
@@ -38,11 +43,11 @@ $("document").ready(function() {
 	map.on('zoomend', function(e) {
 		var zoom = map.getZoom();
 		if (zoom > 17) {
-			map.removeLayer(mapboxGrp);
+			map.removeLayer(mapboxContour);
 			map.addLayer(metro10);
 		} if (zoom <= 17) {
 			map.removeLayer(metro10);
-			map.addLayer(mapboxGrp);
+			map.addLayer(mapboxContour);
 		}
 
 	});
@@ -132,7 +137,7 @@ $("form").submit(function(event) {
 		}
 		poly = L.geoJson(data.features, {style: style, onEachFeature: onEachFeature}).addTo(map);
 	});
-})();
+});
 
 // Get Service Requests from CartoDB
 (function getSvcJSON() {

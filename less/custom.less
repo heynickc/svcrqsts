@@ -32,12 +32,14 @@ body {
 }
 .header h2, .header h3 {
 	color: @white;
-	padding: 6px;
+	padding: 6px 0 6px 0;
 	margin: 0 auto;
   font-weight: bold;
   &:hover {
     .opaqueshadow;
   }
+  width: 100%;
+  text-align: center;
 }
 body aside {
   position: fixed;
@@ -129,6 +131,19 @@ body aside {
   height: 70px;
   width: 60px;
   text-align: center;
+}
+
+#lyrPck button {
+   float: left;
+   width: 33%;
+}
+
+#lyrPck p {
+  text-align: center;
+  margin: 0 0 0 0;
+  color: @white;
+  font-weight: bold;
+  line-height: 28px;
 }
 
 // customize leaflet

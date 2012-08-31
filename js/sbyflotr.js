@@ -60,7 +60,7 @@ var lineGraph = function timeLine(container, data) {
       fontColor: '#fff',
       HtmlText: false,
       mouse : {
-        track : true,
+        track : false,
         relative : true
       },
       yaxis : {
@@ -124,7 +124,7 @@ var probGraph = function probGraph(container, data, ticks) {
         barWidth : 0.75
       },
       mouse : {
-        track : true,
+        track : false,
         relative : true
       },
       yaxis : {

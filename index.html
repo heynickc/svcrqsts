@@ -23,7 +23,6 @@
 <!--[if (lt IE 9) & (!IEMobile)]>
 <script src="./js/selectivizr-min.js"></script>
 <![endif]-->
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css" type="text/css"/>
 <link rel="shortcut icon" href="/favicon.ico">
 
 <!-- Leaflet Styles -->
@@ -62,6 +61,12 @@
 	<header class="header clearfix">
 		<h3>Service Request Viewer</h3>
 	</header>
+	<div id="lyrPck" class="clearfix">
+		<p>Choose a Layer</p>
+		<button class="btn btn-large">Points</button>
+		<button class="btn btn-large">Heatmap</button>
+		<button class="btn btn-large">City</button>
+	</div>
 	<div id="svcGraph"></div>
 	<div id="probGraph"></div>
 	<div class="controls clearfix">
@@ -93,8 +98,6 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="./js/jquery-1.7.2.min.js"><\/script>')</script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-<script src="./js/jquery.ui.touch-punch.min.js"></script>
 <script src="./js/select2/select2.js"></script>
 <script src="./js/script.js"></script>
 <script src="./js/sbyflotr.js"></script>
