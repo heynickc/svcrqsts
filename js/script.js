@@ -12,7 +12,7 @@ $("document").ready(function() {
 	var	mapboxGrp = new L.TileLayer(mapboxGrpUrl, {maxZoom: 19, attribution: mapboxAttrib, tms: true});
 
 	// Contour Tiles on Mapbox Graphite
-	var mapboxContourUrl = 'http://api.tiles.mapbox.com/v1/nickspw.map-l4rdihsl/{z}/{x}/{y}.png';
+	var mapboxContourUrl = 'http://api.tiles.mapbox.com/v1/nickspw.map-ypm2tgy9/{z}/{x}/{y}.png';
 	var	mapboxContour = new L.TileLayer(mapboxContourUrl, {maxZoom: 19, attribution: mapboxAttrib, tms: true});
 
 
@@ -94,51 +94,6 @@ $("form").submit(function(event) {
 	}//if something is in #street field, do geocoding else reset the map
 });//geocode address on submit
 
-// Get City Quadrant polygons from Cart0DB
-(function getCityQuads() {
-	var poly;
-	var quadGeoQry = encodeURIComponent('SELECT quad_name, the_geom FROM cityquads');
-	var quadGeoUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=' + quadGeoQry + '&callback=?';
-
-	function highlightFeature(e) {
-		var layer = e.target;
-
-		layer.setStyle({
-			opacity: 1,
-			fillOpacity: 0,
-			weight: 2
-		});
-
-		if (!L.Browser.ie && !L.Browser.opera) {
-			layer.bringToFront();
-		}
-	}
-	function resetHighlight(e) {
-		poly.resetStyle(e.target);
-	}
-	function zoomToFeature(e) {
-		map.fitBounds(e.target.getBounds());
-	}
-
-	$.getJSON(quadGeoUrl, function(data) {
-		var style = {
-			weight: 1,
-			color: '#fff',
-			fillColor: '#ee791c',
-			opacity: 1,
-			fillOpacity: 0.2
-		};
-		function onEachFeature(feature, layer) {
-			layer.on({
-				mouseover: highlightFeature,
-				mouseout: resetHighlight,
-				click: zoomToFeature
-			});
-		}
-		poly = L.geoJson(data.features, {style: style, onEachFeature: onEachFeature}).addTo(map);
-	});
-});
-
 // Get Service Requests from CartoDB
 (function getSvcJSON() {
 	var svcGeoQry = encodeURIComponent('SELECT id, problemcod, the_geom FROM svcrq');
@@ -151,16 +106,11 @@ $("form").submit(function(event) {
 			pointToLayer: function(feature, latlng) {
 				var marker = L.marker(latlng);
 				clusters.addLayer(marker);
-				clusters.on('clustermouseover', function (e) {
-					return null;
-				});
-				clusters.on('mouseover', function (e) {
-					return null;
-				});
 				return clusters;
 			}
 		}).addTo(map);
-		map.fitBounds(clusters.getBounds());
+		map.fitBounds(points.getBounds());
+		map.panBy([160,0]);
 	});
 })();
 
