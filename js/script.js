@@ -102,15 +102,15 @@ $("form").submit(function(event) {
 	
 	$.getJSON(svcGeoUrl, function(data) {
 		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
-		var points = L.geoJson(data.features, {
-			pointToLayer: function(feature, latlng) {
-				var marker = L.marker(latlng);
-				clusters.addLayer(marker);
-				return clusters;
-			}
-		}).addTo(map);
-		map.fitBounds(points.getBounds());
-		map.panBy([160,0]);
+		var points = new L.geoJson();
+		$.each(data.features, function(fid, feature) {
+			points.addData(feature);
+		});
+		clusters.addLayer(points);
+		clusters.addTo(map);
+
+		// map.fitBounds(clusters.getBounds());
+		// map.panBy([160,0]);
 	});
 })();
 
