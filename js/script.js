@@ -116,12 +116,19 @@ $("form").submit(function(event) {
 
 	$.getJSON(svcGeoUrl, function(data) {
 		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
-		var points = new L.geoJson();
+		var marks = new L.Marker();
+		var points = new L.GeoJSON(null, {
+				pointToLayer: function (feature, latlng) {
+					return new L.Marker(latlng);
+				}
+			});
+		
 		$.each(data.features, function(fid, feature) {
 			points.addData(feature);
 		});
-		clusters.addLayer(points);
-		clusters.addTo(map);
+		// clusters.addLayer(points);
+		// console.log(clusters);
+		// clusters.addTo(map);
 
 		// map.fitBounds(clusters.getBounds());
 		// map.panBy([160,0]);
