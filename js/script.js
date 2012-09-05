@@ -100,39 +100,41 @@ $("form").submit(function(event) {
 
 	var svcGeoUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=' +svcGeoQry + '&callback=?';
 	
+$.getJSON(svcGeoUrl, function(data) {
+var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
+	var points = L.geoJson(data.features, {
+		pointToLayer: function(feature, latlng) {
+			var marker = L.marker(latlng);
+			clusters.addLayer(marker);
+			return clusters;
+		}
+	}).addTo(map);
+	map.fitBounds(points.getBounds());
+	map.panBy([160,0]);
+});
+
+
 	// $.getJSON(svcGeoUrl, function(data) {
 	// 	var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
-	// 	var points = L.geoJson(data.features, {
-	// 		pointToLayer: function(feature, latlng) {
-	// 			var marker = L.marker(latlng);
-	// 			clusters.addLayer(marker);
-	// 			return clusters;
-	// 		}
-	// 	}).addTo(map);
-	// 	map.fitBounds(points.getBounds());
-	// 	map.panBy([160,0]);
-	// });
-
-
-	$.getJSON(svcGeoUrl, function(data) {
-		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
-		var marks = new L.Marker();
-		var points = new L.GeoJSON(null, {
-				pointToLayer: function (feature, latlng) {
-					return new L.Marker(latlng);
-				}
-			});
+	// 	var points = L.geoJson(null, {
+	// 			pointToLayer: function (feature, latlng) {
+	// 				var marker = L.marker(latlng);
+	// 				clusters.addLayer(marker);
+	// 			}
+	// 		});
 		
-		$.each(data.features, function(fid, feature) {
-			points.addData(feature);
-		});
-		// clusters.addLayer(points);
-		// console.log(clusters);
-		// clusters.addTo(map);
+	// 	$.each(data.features, function(fid, feature) {
+	// 		points.addData(feature);
+	// 	});
 
-		// map.fitBounds(clusters.getBounds());
-		// map.panBy([160,0]);
-	});
+	// 	// clusters.addLayer(points);
+	// 	console.log(clusters);
+	// 	map.addLayer(clusters);
+	// 	// map.fitBounds(points.getBounds());
+	// 	// map.panBy([160,0]);
+	// });
+		
+
 })();
 
 });
