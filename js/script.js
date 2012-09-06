@@ -100,18 +100,20 @@ $("form").submit(function(event) {
 
 	var svcGeoUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=' +svcGeoQry + '&callback=?';
 	
+	var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
+
 	$.getJSON(svcGeoUrl, function(data) {
-		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
 		var points = L.geoJson(data.features, {
 			pointToLayer: function(feature, latlng) {
 				var marker = L.marker(latlng);
 				clusters.addLayer(marker);
 				return clusters;
 			}
-		}).addTo(map);
-		map.fitBounds(points.getBounds());
-		map.panBy([160,0]);
+		});
 	});
+	clusters.addTo(map);
+	// map.fitBounds(clusters.getBounds());
+	// map.panBy([160,0]);
 })();
 
 });
