@@ -98,7 +98,7 @@ $("form").submit(function(event) {
 (function getSvcJSON() {
 	var svcGeoQry = encodeURIComponent('SELECT id, problemcod, the_geom FROM svcrq');
 
-	var svcGeoUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=' +svcGeoQry + '&callback=?';
+	var svcGeoUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=' + svcGeoQry + '&callback=?';
 	
 	$.getJSON(svcGeoUrl, function(data) {
 		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
@@ -113,6 +113,23 @@ $("form").submit(function(event) {
 		map.fitBounds(clusters.getBounds());
 		map.panBy([160,0]);
 	});
+})();
+
+(function loadStreets() {
+
+	var stQry = encodeURIComponent('SELECT street FROM centerlines');
+
+	var stUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + stQry + '&callback=?';
+
+	$("#street").select2({
+		ajax: {
+			url: stUrl,
+			dataType: 'jsonp'
+			}
+	});
+
+
+
 })();
 
 });
