@@ -128,8 +128,6 @@ $("form").submit(function(event) {
 			}
 	});
 
-
-
 })();
 
 });
