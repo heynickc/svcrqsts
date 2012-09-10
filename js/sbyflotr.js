@@ -3,14 +3,14 @@ $("document").ready(function() {
 // SR Frequency by Month
 (function getSvcGraph() {
 
-  var svcQry = encodeURIComponent('SELECT  month, count(id) FROM ((SELECT id, EXTRACT(EPOCH FROM (date_trunc(\'month\', datetimecl)))*1000 as month FROM svcrq)) as A GROUP BY month ORDER BY month');
+  var svcQry = encodeURIComponent('SELECT  month, count(id) FROM ((SELECT id, EXTRACT(EPOCH FROM (date_trunc(\'month\', datetimecl)))*1000 as month FROM svc)) as A GROUP BY month ORDER BY month');
 
-  // var qry = encodeURIComponent('SELECT  month, year, count(id) FROM ((SELECT id, date_part(\'year\', datetimecl) as year, date_part(\'month\', datetimecl) as month FROM svcrq)) as A WHERE month > 6 or year > 2010 GROUP BY year, month ORDER BY year, month;');
+  // var qry = encodeURIComponent('SELECT  month, year, count(id) FROM ((SELECT id, date_part(\'year\', datetimecl) as year, date_part(\'month\', datetimecl) as month FROM svc)) as A WHERE month > 6 or year > 2010 GROUP BY year, month ORDER BY year, month;');
 
-  // var qry = encodeURIComponent('SELECT  month, count(id) FROM ((SELECT id, date_trunc(\'month\', CAST(datetimecl AS timestamp)) as month FROM svcrq)) as A GROUP BY month ORDER BY month');
+  // var qry = encodeURIComponent('SELECT  month, count(id) FROM ((SELECT id, date_trunc(\'month\', CAST(datetimecl AS timestamp)) as month FROM svc)) as A GROUP BY month ORDER BY month');
 
   // SQL for selecting highest frequency of problem codes:
-  // var qry = SELECT problemcod, count(problemcod) as cnt FROM svcrq GROUP BY problemcod ORDER BY cnt DESC LIMIT 5
+  // var qry = SELECT problemcod, count(problemcod) as cnt FROM svc GROUP BY problemcod ORDER BY cnt DESC LIMIT 5
 
   var svcQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + svcQry + '&callback=?';
 
@@ -29,7 +29,7 @@ $("document").ready(function() {
 // Top 5 Problem Categories
 (function getProbGraph() {
 
-  var probQry = encodeURIComponent('SELECT problemcod, count(problemcod) as cnt FROM svcrq GROUP BY problemcod ORDER BY cnt DESC LIMIT 5');
+  var probQry = encodeURIComponent('SELECT problemcod, count(problemcod) as cnt FROM svc GROUP BY problemcod ORDER BY cnt DESC LIMIT 5');
 
   var probQryUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + probQry + '&callback=?';
 

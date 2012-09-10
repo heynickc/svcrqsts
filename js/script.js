@@ -96,20 +96,15 @@ $("form").submit(function(event) {
 
 // Get Service Requests from CartoDB
 (function getSvcJSON() {
-	var svcGeoQry = encodeURIComponent('SELECT id, problemcod, the_geom FROM svcrq');
+	var svcGeoQry = encodeURIComponent('SELECT id, problemcod, the_geom FROM svc');
 
-	var svcGeoUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=' + svcGeoQry + '&callback=?';
+	var svcGeoUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=geojson&q=' +svcGeoQry + '&callback=?';
 	
 	$.getJSON(svcGeoUrl, function(data) {
-		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false});
-		var points = L.geoJson(data.features, {
-			pointToLayer: function(feature, latlng) {
-				var marker = L.marker(latlng);
-				clusters.addLayer(marker);
-				return clusters;
-			}
-		});
-		clusters.addTo(map);
+		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false, singleMarkerMode: true});
+		var points = L.geoJson(data.features);
+		points.eachLayer(function(layer) {clusters.addLayer(layer);});
+		map.addLayer(clusters);
 		map.fitBounds(clusters.getBounds());
 		map.panBy([160,0]);
 	});
@@ -133,9 +128,7 @@ $("form").submit(function(event) {
 					}
 				query.callback(data);
 			}
-	});
-
-})();
-
+		});
+	})();
 });
 
