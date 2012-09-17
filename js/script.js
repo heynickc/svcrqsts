@@ -117,7 +117,7 @@ $("form").submit(function(event) {
 	var stUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + stQry + '&callback=?';
 
 	$("#street").select2({
-		placeholder: "Search for a movie",
+		placeholder: "Search",
 		minimumInputLength: 3,
 		query:  function (query) {
 					var data = {results: []}, i, j, s;
@@ -127,7 +127,8 @@ $("form").submit(function(event) {
 					data.results.push({id: query.term + i, text: s});
 					}
 				query.callback(data);
-			}
+			},
+		containerCss: "width: 500px;"
 		});
 	})();
 });
