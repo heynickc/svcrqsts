@@ -116,20 +116,7 @@ $("form").submit(function(event) {
 
 	var stUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + stQry + '&callback=?';
 
-	$("#street").select2({
-		placeholder: "Search",
-		minimumInputLength: 3,
-		query:  function (query) {
-					var data = {results: []}, i, j, s;
-					for (i = 1; i < 5; i++) {
-					s = "";
-					for (j = 0; j < i; j++) {s = s + query.term;}
-					data.results.push({id: query.term + i, text: s});
-					}
-				query.callback(data);
-			},
-		containerCssClass: "street"
-		});
 	})();
+
 });
 
