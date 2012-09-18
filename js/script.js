@@ -116,7 +116,7 @@ $("form").submit(function(event) {
 
 	var stUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + stQry + '&callback=?';
 
-	})();
+})();
 
 });
 
