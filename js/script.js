@@ -110,13 +110,21 @@ $("form").submit(function(event) {
 	});
 })();
 
-(function loadStreets() {
+(function getStreets() {
 
 	var stQry = encodeURIComponent('SELECT street FROM addresses WHERE city=\'SALISBURY\'');
 
 	var stUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + stQry + '&callback=?';
 
+	$.getJSON(stUrl, function() {
+		
+	});
+
 })();
+
+function loadStreets(streets) {
+
+}
 
 });
 
