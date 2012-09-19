@@ -117,13 +117,17 @@ $("form").submit(function(event) {
 	var stUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + stQry + '&callback=?';
 
 	$.getJSON(stUrl, function() {
-		
+		var result = {results: []};
+		$.each(data.rows, function(key, val) {
+			result.results.push({id: key, text: val.address});
+		});
+		loadStreets(result);
 	});
 
 })();
 
 function loadStreets(streets) {
-
+	$('#street').typeadead();
 }
 
 });
