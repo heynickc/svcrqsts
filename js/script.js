@@ -112,22 +112,22 @@ $("form").submit(function(event) {
 
 (function getStreets() {
 
-	var stQry = encodeURIComponent('SELECT street FROM addresses WHERE city=\'SALISBURY\'');
+	var stQry = encodeURIComponent('SELECT address, city, \'MD\' AS state, zipcode FROM addresses WHERE address IS NOT NULL and strtnam=\'PINEHURST\' ORDER BY strtnam');
 
 	var stUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + stQry + '&callback=?';
 
-	$.getJSON(stUrl, function() {
-		var result = {results: []};
+	$.getJSON(stUrl, function(data) {
+		var items = [];
 		$.each(data.rows, function(key, val) {
-			result.results.push({id: key, text: val.address});
+			items.push([val.address]);
 		});
-		loadStreets(result);
+		loadStreets(items);
 	});
 
 })();
 
 function loadStreets(streets) {
-	$('#street').typeadead();
+	$('#street').typeahead();
 }
 
 });
