@@ -119,7 +119,7 @@ $("form").submit(function(event) {
 	$.getJSON(stUrl, function(data) {
 		var items = [];
 		$.each(data.rows, function(key, val) {
-			items.push([val.address]);
+			items.push(val.address);
 		});
 		loadStreets(items);
 	});
@@ -127,7 +127,10 @@ $("form").submit(function(event) {
 })();
 
 function loadStreets(streets) {
-	$('#street').typeahead();
+	console.log(streets);
+	$('#street').typeahead({
+		source: streets
+	});
 }
 
 });
