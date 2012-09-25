@@ -52,6 +52,8 @@ $("document").ready(function() {
 
 	});
 
+
+
 	// Refresh map
 	function refreshMap () {
 		map.setView(salisbury, 13);
@@ -110,28 +112,21 @@ $("form").submit(function(event) {
 	});
 })();
 
-(function getStreets() {
+function getStreets() {
 
 	var stQry = encodeURIComponent('SELECT address, city, \'MD\' AS state, zipcode FROM addresses WHERE address IS NOT NULL and strtnam=\'PINEHURST\' ORDER BY strtnam');
 
 	var stUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + stQry + '&callback=?';
 
-	$.getJSON(stUrl, function(data) {
-		var items = [];
-		$.each(data.rows, function(key, val) {
-			items.push(val.address);
-		});
-		loadStreets(items);
-	});
-
-})();
-
-function loadStreets(streets) {
-	console.log(streets);
-	$('#street').typeahead({
-		source: streets
-	});
 }
+
+$('.ptSwitch').click(function() {
+	$(this).toggleClass('btn-inverse');
+});
+
+$('.heatSwitch').click(function() {
+	$(this).toggleClass('btn-inverse');
+});
 
 });
 

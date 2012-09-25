@@ -60,18 +60,20 @@
 	</header>
 	<div id="lyrPck" class="clearfix">
 		<p>Choose a Layer</p>
-		<button class="btn btn-large">Points</button>
-		<button class="btn btn-large">Heatmap</button>
+		<button class="ptSwitch btn btn-large">Points</button>
+		<button class="heatSwitch btn btn-large">Heatmap</button>
 	</div>
-	<div id="svcGraph"></div>
-	<div id="probGraph"></div>
+	<div class="vizContent">
+		<div id="svcGraph"></div>
+		<div id="probGraph"></div>
+	</div>
 	<div class="controls">
 		<form class="gcodeBox">
 			<div>
-			<input id="street" data-provide="typeahead"></input>
-			<input type="text" id="city"></input>
-			<input type="text" id="state"></input>
-			<input type="text" id="zip" value="21801"></input>
+			<input type="text" id="street" placeholder="Address"></input>
+			<input type="text" id="city" placeholder="City"></input>
+			<input type="text" id="state" placeholder="State"></input>
+			<input type="text" id="zip" placeholder="Zip"></input>
 			</div>
 		<input id="gcodeSubmit" class="btn btn-success" type="submit" value="Go"></input>
 		</form>
@@ -95,11 +97,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="./js/jquery-1.7.2.min.js"><\/script>')</script>
 
+<script src="./js/bootstrap-typeahead.js"></script>
 <script src="./js/script.js"></script>
 <script src="./js/sbyflotr.js"></script>
 <script src="./js/helper.js"></script>
 <script src="./js/plugins.js"></script>
-<script src="./js/bootstrap-typeahead.js"></script>
+
 
 
 </body>
