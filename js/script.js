@@ -112,14 +112,6 @@ $("form").submit(function(event) {
 	});
 })();
 
-function getStreets() {
-
-	var stQry = encodeURIComponent('SELECT address, city, \'MD\' AS state, zipcode FROM addresses WHERE address IS NOT NULL and strtnam=\'PINEHURST\' ORDER BY strtnam');
-
-	var stUrl = 'https://nickchamberlain.cartodb.com/api/v1/sql/?format=json&q=' + stQry + '&callback=?';
-
-}
-
 $('.ptSwitch').click(function() {
 	$(this).toggleClass('btn-inverse');
 });
