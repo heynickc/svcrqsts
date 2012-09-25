@@ -165,10 +165,12 @@ div.leaflet-control-zoom.leaflet-control {
 
 .vizContent {
   width: 320px;
+  margin-top: 10px;
   position: absolute;
   bottom: 90px;
   top: 147px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #svcGraph {
@@ -180,4 +182,20 @@ div.leaflet-control-zoom.leaflet-control {
   height: 220px; 
   width: 300px; 
   margin: 20px 5px 10px 5px;
+}
+
+// jScrollPane
+
+.jspTrack {
+  background-color: @graphite;
+}
+.jspVerticalBar {
+  width: 4px;
+  margin-right: 2px;
+}
+
+.jspDrag {
+  background-color: @white;
+  .rounded(2px);
+  .opacity(.7);
 }

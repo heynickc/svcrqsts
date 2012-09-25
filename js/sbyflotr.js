@@ -1,5 +1,11 @@
 $("document").ready(function() {
 
+$('.vizContent').jScrollPane();
+
+$(window).resize(function() {
+  $('.vizContent').data('jsp').reinitialise();
+});
+
 // SR Frequency by Month
 (function getSvcGraph() {
 
