@@ -42,17 +42,17 @@ $("document").ready(function() {
 	// if map zoom is greater than 17, load 2010 aerials
 	map.on('zoomend', function(e) {
 		var zoom = map.getZoom();
-		if (zoom > 17) {
-			map.removeLayer(mapboxContour);
+		if (zoom > 17 && map.hasLayer(mapboxContour) || map.hasLayer(mapboxGrp)) {
+			map.removeLayer(mapboxContour, mapboxGrp);
 			map.addLayer(metro10);
-		} if (zoom <= 17) {
+		} if (zoom <= 17 && $('.heatSwitch').hasClass('btn-inverse')) {
+			map.removeLayer(metro10);
+			map.addLayer(mapboxGrp);
+		} if (zoom <= 17 && !$('.heatSwitch').hasClass('btn-inverse')) {
 			map.removeLayer(metro10);
 			map.addLayer(mapboxContour);
 		}
-
 	});
-
-
 
 	// Refresh map
 	function refreshMap () {
@@ -109,16 +109,32 @@ $("form").submit(function(event) {
 		map.addLayer(clusters);
 		map.fitBounds(clusters.getBounds());
 		map.panBy([160,0]);
+
+		$('.ptSwitch').click(function() {
+			$(this).toggleClass('btn-inverse');
+			if ($(this).hasClass('btn-inverse')) {
+				map.removeLayer(clusters);
+			}
+			else map.addLayer(clusters);
+		});
+
+		$('.heatSwitch').click(function() {
+			$(this).toggleClass('btn-inverse');
+			if ($(this).hasClass('btn-inverse')) {
+				if (map.getZoom() > 17) {
+					return null;
+				} else {
+				map.removeLayer(mapboxContour);
+				map.addLayer(mapboxGrp);
+				}
+			} else {
+				if (map.getZoom() < 17) {
+				map.addLayer(mapboxContour);
+				}
+			}
+		});
 	});
 })();
-
-$('.ptSwitch').click(function() {
-	$(this).toggleClass('btn-inverse');
-});
-
-$('.heatSwitch').click(function() {
-	$(this).toggleClass('btn-inverse');
-});
 
 });
 
