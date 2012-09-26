@@ -104,7 +104,14 @@ $("form").submit(function(event) {
 	
 	$.getJSON(svcGeoUrl, function(data) {
 		var clusters = new L.MarkerClusterGroup({showCoverageOnHover: false, singleMarkerMode: true});
-		var points = L.geoJson(data.features);
+
+		function onEachFeature(feature, layer) {
+			if (feature.properties && feature.properties.problemcod) {
+				layer.bindPopup(feature.properties.problemcod);
+			}
+		}
+
+		var points = L.geoJson(data.features, {onEachFeature: onEachFeature});
 		points.eachLayer(function(layer) {clusters.addLayer(layer);});
 		map.addLayer(clusters);
 		map.fitBounds(clusters.getBounds());
