@@ -136,6 +136,7 @@ $("form").submit(function(event) {
 				}
 			} else {
 				if (map.getZoom() <= 17) {
+				map.removeLayer(mapboxGrp);
 				map.addLayer(mapboxContour);
 				}
 			}
