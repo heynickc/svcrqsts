@@ -128,7 +128,7 @@ $("form").submit(function(event) {
 				map.addLayer(mapboxGrp);
 				}
 			} else {
-				if (map.getZoom() < 17) {
+				if (map.getZoom() <= 17) {
 				map.addLayer(mapboxContour);
 				}
 			}
